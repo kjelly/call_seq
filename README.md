@@ -26,6 +26,12 @@ How to use
     map.dump_to_file('output.json')
   ```
 
+  or
+
+  ```sh
+    $ python -m call_seq.core output.json demo1.py
+  ```
+
   Now you can read the `output.json` file.
 
   The file output is maybe like
