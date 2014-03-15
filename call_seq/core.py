@@ -98,3 +98,13 @@ def set_trace(trace_func=None, frame=None):
         frame.f_trace = trace_func
         frame = frame.f_back
     sys.settrace(trace_func)
+
+
+if __name__ == '__main__':
+    output_name = sys.argv[1]
+    file_name = sys.argv[2]
+    seq = CallSeq()
+    seq.set_trace()
+    execfile(file_name)
+    seq.unset_trace()
+    seq.dump_to_file(output_name)
