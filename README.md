@@ -106,6 +106,15 @@ How to use
   ``` sh
     python -m call_seq.browser demo.json
   ```
+  
+  If you want to use browser.py, you need to install the below package.
+  
+  ```
+    pyside
+    pyqode.core
+    pyqode.python
+    
+  ```
 
 
 Known limit.
