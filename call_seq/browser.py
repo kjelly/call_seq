@@ -41,8 +41,9 @@ class MainWindow(QtGui.QMainWindow):
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea,
                            self.info_docker)
 
-    def openFile(self):
-        file_name, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open file')
+    def openFile(self, file_name=None):
+        if not file_name:
+            file_name, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open file')
         if not file_name:
             return
         with open(file_name, 'r') as ftr:
@@ -84,11 +85,13 @@ class MainWindow(QtGui.QMainWindow):
 
 
 def main():
+    import sys
     app = QtGui.QApplication(sys.argv)
 
     ex = MainWindow()
     ex.show()
-
+    if len(sys.argv) > 1:
+        ex.openFile(sys.argv[1])
     sys.exit(app.exec_())
 
 
