@@ -103,6 +103,10 @@ How to use
 
   browser.py help you to trace code more easy.
 
+  ``` sh
+    python -m call_seq.browser demo.json
+  ```
+
 
 Known limit.
 -----------------
