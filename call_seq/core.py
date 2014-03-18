@@ -32,12 +32,22 @@ def read_source_code_from_file(file_name, lineno):
         return source_code[lineno - 1].strip()
 
 
+class Encoder(json.JSONEncoder):
+    def default(self, obj):
+        try:
+            return json.JSONEncoder.default(self, obj)
+        except TypeError:
+            print obj
+            return json.dumps(str(obj))
+
+
 class CallSeq(object):
     def __init__(self, pattern_list=None):
         self.top_call_sequence = {'seq': [], 'name': '<top>'}
         self.cuurent_call_sequence = self.top_call_sequence
         self.pattern_list = pattern_list
         self.stack = [self.top_call_sequence]
+        self.record_local_vars = False
 
     def trace(self, frame, event, arg):
         if not frame.f_back:
@@ -51,6 +61,7 @@ class CallSeq(object):
             else:
                 return self.trace
         if event in ['call']:
+            self.record_local_vars = True
             code = frame.f_back.f_code
             file_name = code.co_filename
             callee = read_source_code_from_file(file_name,
@@ -69,6 +80,9 @@ class CallSeq(object):
             self.stack[-1]['return'] = str(arg)
             self.stack[-1]['return_lineno'] = return_lineno
             self.stack.pop()
+        elif self.record_local_vars:
+            self.record_local_vars = False
+            self.stack[-1]['arguments'] = try_copy(frame.f_locals)
 
         return self.trace
 
@@ -84,7 +98,7 @@ class CallSeq(object):
     def dump_to_file(self, path):
         with open(path, 'w') as ftr:
             ftr.write(json.dumps(self.to_dict(), sort_keys=True,
-                      indent=4, separators=(',', ': ')))
+                      indent=4, separators=(',', ': '), cls=Encoder))
 
 
 def set_trace(trace_func=None, frame=None):
