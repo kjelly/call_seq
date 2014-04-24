@@ -7,20 +7,28 @@ import json
 def try_copy(data):
     # some inner structure use dict.
     if isinstance(data, dict):
+        try:
+            ret = {}
+            for i in data:
+                new_copy = try_copy(data[i])
+                ret[i] = new_copy
+            return ret
+        except:
+            pass
+    try:
+        # copy data
+        return copy.deepcopy(data)
+    except Exception as e:
+        # if the data can't be copied
+        pass
+    # just return data.
+    try:
         ret = {}
         for i in data:
-            new_copy = try_copy(data[i])
-            if new_copy:
-                ret[i] = new_copy
+            ret[i] = make_string(data[i])
         return ret
-    else:
-        try:
-            # copy data
-            return copy.deepcopy(data)
-        except Exception as e:
-            # if the data can't be copied
-            pass
-    # just return data.
+    except:
+        pass
     return data
 
 
@@ -36,9 +44,25 @@ class Encoder(json.JSONEncoder):
     def default(self, obj):
         try:
             return json.JSONEncoder.default(self, obj)
-        except TypeError:
-            print obj
-            return json.dumps(str(obj))
+        except:
+            pass
+        try:
+            return json.dumps(make_string(obj))
+        except:
+            pass
+        return 'encode error'
+
+
+def make_string(obj):
+    try:
+        return str(obj)
+    except:
+        pass
+    try:
+        return repr(obj)
+    except:
+        pass
+    return 'error happened'
 
 
 class CallSeq(object):
@@ -77,12 +101,12 @@ class CallSeq(object):
             if self.stack[-1] is self.top_call_sequence:
                 return self.trace
             return_lineno = frame.f_lineno
-            self.stack[-1]['return'] = str(arg)
+            # self.stack[-1]['return'] = make_string(arg)
             self.stack[-1]['return_lineno'] = return_lineno
             self.stack.pop()
         elif self.record_local_vars:
             self.record_local_vars = False
-            self.stack[-1]['arguments'] = try_copy(frame.f_locals)
+            # self.stack[-1]['arguments'] = try_copy(frame.f_locals)
 
         return self.trace
 
