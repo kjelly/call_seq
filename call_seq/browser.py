@@ -2,6 +2,7 @@ import sys
 from PySide import QtGui, QtCore
 import json
 import os
+import copy
 
 from TextEdit import Editor
 
@@ -72,16 +73,12 @@ class MainWindow(QtGui.QMainWindow):
             return
         self.main_editor.openFile(file_name)
         self.main_editor.gotoLine(meta_data['lineno'])
-        #with open(file_name, 'r') as ftr:
-        #    self.main_editor.setText(ftr.read())
 
-        info = ''
-        format = '%s: %s\n' + '-' * 10 + '\n'
-        for i in meta_data:
-            if i == 'seq':
-                continue
-            info += format % (i, meta_data[i])
-        self.info_widget.setText(info)
+        info_data = copy.copy(meta_data)
+        del info_data['seq']
+        self.info_widget.setText(json.dumps(info_data,
+                                            sort_keys=True,indent=4,
+                                            separators=(',', ': ')))
 
 
 def main():
@@ -97,3 +94,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
