@@ -40,6 +40,39 @@ def read_source_code_from_file(file_name, lineno):
         return source_code[lineno - 1].strip()
 
 
+def get_obj_type(obj, deep=True):
+    ret = None
+    try:
+        if isinstance(obj, dict):
+            ret = {}
+            for key in iter(obj):
+                if deep:
+                    ret[key] = get_obj_type(obj[key], deep=False)
+                else:
+                    ret[key] = '<' + obj[key].__class__.__name__ + '>'
+        elif isinstance(obj, list) or isinstance(obj, tuple):
+            ret = []
+            for ele in obj:
+                if deep:
+                    ret.append(get_obj_type(ele, deep=False))
+                else:
+                    ret.append('<' + ele.__class__.__name__ + '>')
+        elif isinstance(obj, int):
+                ret = '<' + obj.__class__.__name__ + '>: '
+                ret += str(obj)
+        elif isinstance(obj, str):
+                ret = '<' + obj.__class__.__name__ + '>: '
+                ret += repr(obj)
+    except:
+        ret = None
+    if ret is None:
+        try:
+            ret = '<' + obj.__class__.__name__ + '>'
+        except:
+            ret = 'Error'
+    return ret
+
+
 class Encoder(json.JSONEncoder):
     def default(self, obj):
         try:
@@ -102,11 +135,13 @@ class CallSeq(object):
                 return self.trace
             return_lineno = frame.f_lineno
             # self.stack[-1]['return'] = make_string(arg)
+            self.stack[-1]['return'] = get_obj_type(arg)
             self.stack[-1]['return_lineno'] = return_lineno
             self.stack.pop()
         elif self.record_local_vars:
             self.record_local_vars = False
             # self.stack[-1]['arguments'] = try_copy(frame.f_locals)
+            self.stack[-1]['arguments'] = get_obj_type(frame.f_locals)
 
         return self.trace
 
