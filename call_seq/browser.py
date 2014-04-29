@@ -60,7 +60,7 @@ class MainWindow(QtGui.QMainWindow):
     def build_tree(self, top, data):
         for i in data['seq']:
             item = QtGui.QTreeWidgetItem(top)
-            if i['name']:
+            if i.get('name', None):
                 item.setText(0, i['name'])
             else:
                 item.setText(0, i['code'])
