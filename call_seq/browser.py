@@ -60,11 +60,13 @@ class MainWindow(QtGui.QMainWindow):
     def build_tree(self, top, data):
         for i in data['seq']:
             item = QtGui.QTreeWidgetItem(top)
-            item.setText(0, i['code'])
+            if i['name']:
+                item.setText(0, i['name'])
+            else:
+                item.setText(0, i['code'])
             item.meta_data = i
-            self.build_tree(item, i)
+            name = self.build_tree(item, i)
             top.addChild(item)
-        return top
 
     def item_clicked(self, item, column):
         meta_data = item.meta_data
