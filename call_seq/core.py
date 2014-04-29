@@ -138,6 +138,9 @@ class CallSeq(object):
             self.stack[-1]['return'] = get_obj_type(arg)
             self.stack[-1]['return_lineno'] = return_lineno
             self.stack.pop()
+            code = frame.f_back.f_code
+            self.stack[-1]['name'] = code.co_name
+
         elif self.record_local_vars:
             self.record_local_vars = False
             # self.stack[-1]['arguments'] = try_copy(frame.f_locals)
@@ -156,7 +159,7 @@ class CallSeq(object):
 
     def dump_to_file(self, path):
         with open(path, 'w') as ftr:
-            ftr.write(json.dumps(self.to_dict(), sort_keys=True,
+            ftr.write(json.dumps(self.to_dict(), sort_keys=True, skipkeys=True,
                       indent=4, separators=(',', ': '), cls=Encoder))
 
 
