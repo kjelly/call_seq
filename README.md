@@ -19,11 +19,11 @@ How to use
   ```python
     from call_seq import CallSeq
 
-    map = CallSeq()
-    map.set_trace()
+    trail = CallSeq()
+    trail.set_trace()
     # the code you want to trace.
-    map.unset_trace()
-    map.dump_to_file('output.json')
+    trail.unset_trace()
+    trail.dump_to_file('output.json')
   ```
 
   or
