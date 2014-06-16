@@ -19,6 +19,7 @@ from pyqode.python.modes import GoToAssignmentsMode
 from pyqode.python.modes import DocumentAnalyserMode
 from pyqode.python.panels import PreLoadPanel
 from pyqode.python.panels import SymbolBrowserPanel
+from pyqode.core.modes import CaretLineHighlighterMode
 from pyqode.python.panels import QuickDocPanel
 
 
@@ -41,4 +42,5 @@ class RichTextEdit(pyqode.core.QCodeEdit):
         self.installMode(GoToAssignmentsMode())
         self.installPanel(QuickDocPanel(), pyqode.core.PanelPosition.BOTTOM)
         self.installMode(CommentsMode())
+        self.installMode(CaretLineHighlighterMode())
         self.setReadOnly(True)
