@@ -110,22 +110,27 @@ class CallSeq(object):
         if not frame.f_back:
             return self.trace
         if self.pattern_list:
-            code = frame.f_back.f_code
-            file_name = code.co_filename
+            caller_code = frame.f_back.f_code
+            caller_file_name = caller_code.co_filename
             for pattern in self.pattern_list:
-                if pattern in file_name:
+                if pattern in caller_file_name:
                     break
             else:
                 return self.trace
         if event in ['call']:
             self.record_local_vars = True
-            code = frame.f_back.f_code
-            file_name = code.co_filename
-            callee = read_source_code_from_file(file_name,
+            caller_code = frame.f_back.f_code
+            caller_file_name = caller_code.co_filename
+            caller = read_source_code_from_file(caller_file_name,
                                                 frame.f_back.f_lineno)
-            new_call_sequence = {'code': callee, 'seq': [],
+            callee_code = frame.f_code
+            callee_file_name = callee_code.co_filename
+            callee_first_line = callee_code.co_firstlineno
+            new_call_sequence = {'caller_code': caller, 'seq': [],
                                  'lineno': frame.f_back.f_lineno,
-                                 'file_name': file_name}
+                                 'caller_file_name': caller_file_name,
+                                 'callee_first_line': callee_code.co_firstlineno,
+                                 'callee_file_name': callee_file_name}
 
             self.stack[-1]['seq'].append(new_call_sequence)
             self.stack.append(new_call_sequence)
@@ -138,8 +143,8 @@ class CallSeq(object):
             self.stack[-1]['return'] = get_obj_type(arg)
             self.stack[-1]['return_lineno'] = return_lineno
             self.stack.pop()
-            code = frame.f_back.f_code
-            self.stack[-1]['name'] = code.co_name
+            caller_code = frame.f_back.f_code
+            self.stack[-1]['name'] = caller_code.co_name
 
         elif self.record_local_vars:
             self.record_local_vars = False
