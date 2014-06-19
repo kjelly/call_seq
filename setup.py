@@ -8,7 +8,7 @@ import call_seq
 setup(
 
     name = 'call_seq',
-    version = '0.0.1',
+    version = '0.0.2',
     description = 'call sequence visualization',
 
     author = 'ya790206',
