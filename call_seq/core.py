@@ -5,7 +5,8 @@ from .utils import read_source_code_from_file, get_obj_type, \
 
 
 class CallSeq(object):
-    def __init__(self, pattern_list=None):
+    def __init__(self, pattern_list=None, name="sequence.json"):
+        self.name = name
         self.top_call_sequence = {'seq': [], 'name': '<top>'}
         self.cuurent_call_sequence = self.top_call_sequence
         self.pattern_list = pattern_list
@@ -72,6 +73,14 @@ class CallSeq(object):
         with open(path, 'w') as ftr:
             ftr.write(json.dumps(self.to_dict(), sort_keys=True, skipkeys=True,
                       indent=4, separators=(',', ': '), cls=Encoder))
+
+    def __enter__(self):
+        self.set_trace()
+
+    def __exit__(self ,type, value, traceback):
+        self.unset_trace()
+        self.dump_to_file(self.name)
+
 
 
 if __name__ == '__main__':
