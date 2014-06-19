@@ -176,6 +176,11 @@ How to use
     
   ```
 
+Screen snapshot
+-----------------
+
+![Screen snapshot1](https://raw.githubusercontent.com/ya790206/call_seq/master/snapshot/explain.png "Screen snapshot1")
+
 
 Known limit.
 -----------------
