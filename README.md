@@ -28,6 +28,23 @@ How to use
 
   or
 
+  ```python
+    @trace('output.json')
+    def main():
+        test()
+
+  ```
+
+
+
+  ```python
+    if __name__ == '__main__':
+        with CallSeq(name='output.json'):
+            test()
+  ```
+
+  or
+
   ```sh
     $ python -m call_seq.core output.json demo1.py
   ```
@@ -38,54 +55,77 @@ How to use
 
   ``` json
 {
-    "name": "<module>",
+    "name": "inner",
     "seq": [
         {
             "arguments": {},
-            "code": "test()",
-            "file_name": "demo.py",
-            "lineno": 22,
-            "name": "test",
+            "callee_file_name": "demo3.py",
+            "callee_first_line": 19,
+            "caller_code": "ret = func(*args, **kwargs)",
+            "caller_file_name": "/home/ya790206/call_seq/call_seq/__init__.py",
+            "lineno": 9,
+            "name": "main",
             "return": "<NoneType>",
-            "return_lineno": 16,
+            "return_lineno": 21,
             "seq": [
                 {
                     "arguments": {},
-                    "code": "test1()",
-                    "file_name": "demo.py",
-                    "lineno": 14,
-                    "name": "test1",
-                    "return": "<int>: 2",
-                    "return_lineno": 10,
+                    "callee_file_name": "demo3.py",
+                    "callee_first_line": 13,
+                    "caller_code": "test()",
+                    "caller_file_name": "demo3.py",
+                    "lineno": 21,
+                    "name": "test",
+                    "return": "<NoneType>",
+                    "return_lineno": 16,
                     "seq": [
                         {
                             "arguments": {},
-                            "code": "test2()",
-                            "file_name": "demo.py",
-                            "lineno": 9,
-                            "return": "<NoneType>",
-                            "return_lineno": 5,
-                            "seq": []
-                        }
-                    ]
-                },
-                {
-                    "arguments": {},
-                    "code": "test1()",
-                    "file_name": "demo.py",
-                    "lineno": 16,
-                    "name": "test1",
-                    "return": "<int>: 2",
-                    "return_lineno": 10,
-                    "seq": [
+                            "callee_file_name": "demo3.py",
+                            "callee_first_line": 8,
+                            "caller_code": "test1()",
+                            "caller_file_name": "demo3.py",
+                            "lineno": 14,
+                            "name": "test1",
+                            "return": "<int>: 2",
+                            "return_lineno": 10,
+                            "seq": [
+                                {
+                                    "arguments": {},
+                                    "callee_file_name": "demo3.py",
+                                    "callee_first_line": 4,
+                                    "caller_code": "test2()",
+                                    "caller_file_name": "demo3.py",
+                                    "lineno": 9,
+                                    "return": "<NoneType>",
+                                    "return_lineno": 5,
+                                    "seq": []
+                                }
+                            ]
+                        },
                         {
                             "arguments": {},
-                            "code": "test2()",
-                            "file_name": "demo.py",
-                            "lineno": 9,
-                            "return": "<NoneType>",
-                            "return_lineno": 5,
-                            "seq": []
+                            "callee_file_name": "demo3.py",
+                            "callee_first_line": 8,
+                            "caller_code": "test1()",
+                            "caller_file_name": "demo3.py",
+                            "lineno": 16,
+                            "name": "test1",
+                            "return": "<int>: 2",
+                            "return_lineno": 10,
+                            "seq": [
+                                {
+                                    "arguments": {},
+                                    "callee_file_name": "demo3.py",
+                                    "callee_first_line": 4,
+                                    "caller_code": "test2()",
+                                    "caller_file_name": "demo3.py",
+                                    "lineno": 9,
+                                    "return": "<NoneType>",
+                                    "return_lineno": 5,
+                                    "seq": []
+                                }
+                            ]
                         }
                     ]
                 }
@@ -95,18 +135,22 @@ How to use
             "arguments": {
                 "self": "<CallSeq>"
             },
-            "code": "map.unset_trace()",
-            "file_name": "demo.py",
-            "lineno": 23,
+            "callee_file_name": "/home/ya790206/call_seq/call_seq/core.py",
+            "callee_first_line": 69,
+            "caller_code": "trail.unset_trace()",
+            "caller_file_name": "/home/ya790206/call_seq/call_seq/__init__.py",
+            "lineno": 10,
             "seq": [
                 {
                     "arguments": {
                         "frame": "<NoneType>",
                         "trace_func": "<NoneType>"
                     },
-                    "code": "set_trace(None)",
-                    "file_name": "/home/ya790206/tmp_call_seq/call_seq/call_seq/core.py",
-                    "lineno": 158,
+                    "callee_file_name": "/home/ya790206/call_seq/call_seq/utils.py",
+                    "callee_first_line": 7,
+                    "caller_code": "set_trace(None)",
+                    "caller_file_name": "/home/ya790206/call_seq/call_seq/core.py",
+                    "lineno": 70,
                     "seq": []
                 }
             ]
