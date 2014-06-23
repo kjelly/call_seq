@@ -18,7 +18,7 @@ class InfoWidgetWrapper(object):
             self.go_to_line_func(self.data['callee_file_name'], self.data['return_lineno'])
         elif key in ['callee_first_line', 'name', 'arguments', 'callee_file_name']:
             self.go_to_line_func(self.data['callee_file_name'], self.data['callee_first_line'])
-        elif key in ['caller_code', 'caller_file_name']:
+        elif key in ['caller_code', 'caller_file_name', 'lineno']:
             self.go_to_line_func(self.data['caller_file_name'], self.data['lineno'])
 
 
