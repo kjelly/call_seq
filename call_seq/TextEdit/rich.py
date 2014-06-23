@@ -43,4 +43,4 @@ class RichTextEdit(pyqode.core.QCodeEdit):
         self.installPanel(QuickDocPanel(), pyqode.core.PanelPosition.BOTTOM)
         self.installMode(CommentsMode())
         self.installMode(CaretLineHighlighterMode())
-        self.setReadOnly(True)
+        self.setReadOnly(False)
