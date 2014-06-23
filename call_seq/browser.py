@@ -3,6 +3,8 @@ from PySide import QtGui, QtCore
 import json
 import os
 import copy
+from Widgets.JsonWidgetWrapper import JsonWidgetWrapper
+from Widgets.InfoWidgetWrapper import InfoWidgetWrapper
 
 from TextEdit import Editor
 
@@ -49,7 +51,8 @@ class MainWindow(QtGui.QMainWindow):
                            self.tree_docker)
 
         self.info_docker = QtGui.QDockWidget("Info", self)
-        self.info_widget = QtGui.QTextEdit(self.info_docker)
+        self.info_widget_wrapper = InfoWidgetWrapper(self, self.go_to_file_line)
+        self.info_widget = self.info_widget_wrapper.widget
         self.info_docker.setWidget(self.info_widget)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea,
                            self.info_docker)
@@ -100,9 +103,7 @@ class MainWindow(QtGui.QMainWindow):
 
         info_data = copy.copy(item.meta_data)
         del info_data['seq']
-        self.info_widget.setText(json.dumps(info_data,
-                                            sort_keys=True,indent=4,
-                                            separators=(',', ': ')))
+        self.info_widget_wrapper.set_data(info_data)
 
     def go_to_file_line(self, file_name, lineno):
         if not os.path.exists(file_name):
