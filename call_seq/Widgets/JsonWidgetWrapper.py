@@ -35,7 +35,7 @@ class JsonWidgetWrapper(QtCore.QObject):
         parent.setText(1, '%s' % (str(data)))
 
     def build_from_dict(self, parent, data):
-        for key in data:
+        for key in sorted(data.keys()):
             value = data[key]
             item = QtGui.QTreeWidgetItem(parent)
             item.setText(0, str(key))
