@@ -1,4 +1,4 @@
-from PySide import QtCore
+from PySide import QtCore, QtGui
 import pyqode.python
 
 
@@ -40,7 +40,67 @@ class RichTextEdit(pyqode.core.QCodeEdit):
         self.installMode(CalltipsMode())
         self.installMode(PyIndenterMode())
         self.installMode(GoToAssignmentsMode())
-        self.installPanel(QuickDocPanel(), pyqode.core.PanelPosition.BOTTOM)
+        self.docPanel = QuickDocPanel()
+
+        self.installPanel(self.docPanel, pyqode.core.PanelPosition.BOTTOM)
         self.installMode(CommentsMode())
         self.installMode(CaretLineHighlighterMode())
-        self.setReadOnly(False)
+        self.saveOnFrameDeactivation = False
+
+        self.hotkey_action_map = {
+            '#': self.selectWordUnderCursorAndSearchBackward,
+            'p': self.selectWordUnderCursorAndSearchBackward,
+            '*': self.selectWordUnderCursorAndSearchForward,
+            'n': self.selectWordUnderCursorAndSearchForward,
+            'j': self.moveCursorDown,
+            'k': self.moveCursorUp,
+            'K': self.docPanel._onQuickDoc_triggered,
+            'W': self.moveCursorWordLeft,
+            'w': self.moveCursorWordRight,
+        }
+
+    def keyPressEvent(self, event):
+        """
+        Overrides the keyPressEvent to emit the keyPressed signal.
+
+        Also takes care of indenting and handling smarter home key.
+
+        :param event: QKeyEvent
+        """
+        self.hotkey_action_map.get(event.text(), self.doNothing)()
+        # import pdb;pdb.set_trace()
+        return True
+
+    def keyReleaseEvent(self, event):
+        """
+        Overrides keyReleaseEvent to emit the keyReleased signal.
+
+        :param event: QKeyEvent
+        """
+        return True
+
+    def selectWordUnderCursorAndSearchForward(self):
+        tc = self.selectWordUnderCursor(True)
+        self.setTextCursor(tc)
+        self.find(self.selectedText(), QtGui.QTextDocument.FindWholeWords)
+
+    def selectWordUnderCursorAndSearchBackward(self):
+        tc = self.selectWordUnderCursor(True)
+        self.setTextCursor(tc)
+        self.find(self.selectedText(), QtGui.QTextDocument.FindWholeWords |
+                                       QtGui.QTextDocument.FindBackward)
+
+    def doNothing(self):
+        return True
+
+    def moveCursorDown(self):
+        self.moveCursor(QtGui.QTextCursor.Down)
+
+    def moveCursorUp(self):
+        self.moveCursor(QtGui.QTextCursor.Up)
+
+    def moveCursorWordLeft(self):
+        self.moveCursor(QtGui.QTextCursor.WordLeft)
+
+    def moveCursorWordRight(self):
+        self.moveCursor(QtGui.QTextCursor.WordRight)
