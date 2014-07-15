@@ -170,10 +170,9 @@ How to use
   If you want to use browser.py, you need to install the below package.
   
   ```
-    pyside
-    pyqode.core
-    pyqode.python
-    
+    pyqode.core==1.3.2
+    pyqode.python==1.3.2
+    PySide==1.2.2 
   ```
 
 Screen snapshot
