@@ -190,3 +190,8 @@ Known limit.
      in function A and call unset_trace in function B.
 
 
+
+Special thanks
+----------------------
+
+Thanks to JetBrains for providing pycharm open source license to the project.
