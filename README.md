@@ -159,21 +159,16 @@ How to use
 }
   ```
 
-  You can open the file using browser.py
+  You can open the file using [call_seq_browser](https://github.com/ya790206/call_seq_browser)
 
-  browser.py help you to trace code more easy.
+  call_seq_browser help you to trace code more easy.
 
   ``` sh
-    python -m call_seq.browser output.json
+    python -m call_seq_browser output.json
   ```
   
-  If you want to use browser.py, you need to install the below package.
   
-  ```
-    pyqode.core==1.3.2
-    pyqode.python==1.3.2
-    PySide==1.2.2 
-  ```
+  See [call_seq_browser](https://github.com/ya790206/call_seq_browser) for more.
 
 Screen snapshot
 -----------------
