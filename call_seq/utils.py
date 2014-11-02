@@ -134,4 +134,7 @@ class FileManger(object):
         lines = self.read_file(file_name)
         return ''.join(lines)
 
+    def to_dict(self):
+        return self.cache
+
 
