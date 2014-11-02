@@ -109,3 +109,29 @@ def make_string(obj):
     except:
         pass
     return 'error happened'
+
+
+class FileManger(object):
+    def __init__(self):
+        self.cache = {}
+
+    def read_file(self, file_name):
+        if not file_name in self.cache:
+            if not os.path.exists(file_name):
+                self.cache[file_name]= ''
+            else:
+                with open(file_name, 'r') as ftr:
+                    source_code = ftr.readlines()
+                    self.cache[file_name]= source_code
+        return self.cache[file_name]
+
+
+    def get_line(self, file_name, lineno):
+        lines = self.read_file(file_name)
+        return lines[lineno - 1].strip()
+
+    def get_content(self, file_name):
+        lines = self.read_file(file_name)
+        return ''.join(lines)
+
+
