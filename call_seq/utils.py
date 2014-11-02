@@ -135,6 +135,9 @@ class FileManger(object):
         return ''.join(lines)
 
     def to_dict(self):
-        return self.cache
+        ret = {}
+        for i in self.cache:
+            ret[i] = ''.join(self.cache[i])
+        return ret
 
 
