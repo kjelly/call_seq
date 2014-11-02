@@ -1,7 +1,7 @@
 import sys
 import json
 from .utils import read_source_code_from_file, get_obj_type, \
-    Encoder, try_copy, set_trace
+    Encoder, try_copy, set_trace, FileManger
 
 
 class CallSeq(object):
@@ -12,6 +12,7 @@ class CallSeq(object):
         self.pattern_list = pattern_list
         self.stack = [self.top_call_sequence]
         self.record_local_vars = False
+        self.file_manager = FileManger()
 
     def trace(self, frame, event, arg):
         if not frame.f_back:
@@ -28,7 +29,7 @@ class CallSeq(object):
             self.record_local_vars = True
             caller_code = frame.f_back.f_code
             caller_file_name = caller_code.co_filename
-            caller = read_source_code_from_file(caller_file_name,
+            caller = self.file_manager.get_line(caller_file_name,
                                                 frame.f_back.f_lineno)
             callee_code = frame.f_code
             callee_file_name = callee_code.co_filename
