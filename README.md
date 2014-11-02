@@ -159,22 +159,16 @@ How to use
 }
   ```
 
-  You can open the file using browser.py
+  You can open the file using [call_seq_browser](https://github.com/ya790206/call_seq_browser)
 
-  browser.py help you to trace code more easy.
+  call_seq_browser help you to trace code more easy.
 
   ``` sh
-    python -m call_seq.browser output.json
+    python -m call_seq_browser output.json
   ```
   
-  If you want to use browser.py, you need to install the below package.
   
-  ```
-    pyside
-    pyqode.core
-    pyqode.python
-    
-  ```
+  See [call_seq_browser](https://github.com/ya790206/call_seq_browser) for more.
 
 Screen snapshot
 -----------------
@@ -191,3 +185,8 @@ Known limit.
      in function A and call unset_trace in function B.
 
 
+
+Special thanks
+----------------------
+
+Thanks to JetBrains for providing pycharm open source license to the project.
