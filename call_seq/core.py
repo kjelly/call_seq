@@ -72,7 +72,11 @@ class CallSeq(object):
 
     def dump_to_file(self, path):
         with open(path, 'w') as ftr:
-            ftr.write(json.dumps(self.to_dict(), sort_keys=True, skipkeys=True,
+            data = {
+                'trace': self.to_dict(),
+                'code': self.file_manager.to_dict()
+            }
+            ftr.write(json.dumps(data, sort_keys=True, skipkeys=True,
                       indent=4, separators=(',', ': '), cls=Encoder))
 
     def __enter__(self):
