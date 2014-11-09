@@ -1,5 +1,6 @@
 call_seq
 ===========
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ya790206/call_seq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
   call_seq is a tool that let you trace code easily. It record function call sequence.
    So you can learn how the process run.
