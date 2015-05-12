@@ -5,7 +5,7 @@ from .utils import read_source_code_from_file, get_obj_type, \
 
 
 class CallSeq(object):
-    def __init__(self, pattern_list=None, name="sequence.json"):
+    def __init__(self, pattern_list=None, name="sequence.json", max_depth=None):
         self.name = name
         self.top_call_sequence = {'seq': [], 'name': '<top>'}
         self.cuurent_call_sequence = self.top_call_sequence
@@ -13,9 +13,22 @@ class CallSeq(object):
         self.stack = [self.top_call_sequence]
         self.record_local_vars = False
         self.file_manager = FileManger()
+        self.max_depth = max_depth
+        self.depth = 0
+
+    def reach_max_depth(self):
+        if self.max_depth is None:
+            return False
+        return self.depth > self.max_depth
+
+    def increase_depth(self):
+        self.depth += 1
+
+    def decrease_depth(self):
+        self.depth -= 1
 
     def trace(self, frame, event, arg):
-        if not frame.f_back:
+        if not frame.f_back or self.reach_max_depth():
             return self.trace
         if self.pattern_list:
             caller_code = frame.f_back.f_code
@@ -26,6 +39,7 @@ class CallSeq(object):
             else:
                 return self.trace
         if event in ['call']:
+            self.increase_depth()
             self.record_local_vars = True
             caller_code = frame.f_back.f_code
             caller_file_name = caller_code.co_filename
@@ -46,6 +60,7 @@ class CallSeq(object):
         elif event in ['return']:
             if self.stack[-1] is self.top_call_sequence:
                 return self.trace
+            self.decrease_depth()
             return_lineno = frame.f_lineno
             # self.stack[-1]['return'] = make_string(arg)
             self.stack[-1]['return'] = get_obj_type(arg)
