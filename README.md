@@ -30,6 +30,8 @@ How to use
   or
 
   ```python
+  from call_seq import trace
+  
     @trace('output.json')
     def main():
         test()
