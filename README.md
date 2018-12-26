@@ -10,7 +10,7 @@ How to install
 ----------------
 
 ```sh
-pip install git+https://github.com/ya790206/call_seq
+pip install git+https://github.com/kjelly/call_seq
 ```
 
 
