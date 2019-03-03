@@ -12,10 +12,11 @@ def test1():
 
 def test():
     test1()
-    print 'call me'
+    print('call me')
     test1()
 
 
 if __name__ == '__main__':
     with CallSeq(name='output.json'):
         test()
+

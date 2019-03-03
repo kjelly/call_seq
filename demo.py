@@ -12,7 +12,7 @@ def test1():
 
 def test():
     test1()
-    print 'call me'
+    print('call me')
     test1()
 
 
