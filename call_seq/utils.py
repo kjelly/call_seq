@@ -116,15 +116,14 @@ class FileManger(object):
         self.cache = {}
 
     def read_file(self, file_name):
-        if not file_name in self.cache:
+        if file_name not in self.cache:
             if not os.path.exists(file_name):
-                self.cache[file_name]= ''
+                self.cache[file_name] = ''
             else:
                 with open(file_name, 'r') as ftr:
                     source_code = ftr.readlines()
-                    self.cache[file_name]= source_code
+                    self.cache[file_name] = source_code
         return self.cache[file_name]
-
 
     def get_line(self, file_name, lineno):
         lines = self.read_file(file_name)
@@ -139,5 +138,3 @@ class FileManger(object):
         for i in self.cache:
             ret[i] = ''.join(self.cache[i])
         return ret
-
-

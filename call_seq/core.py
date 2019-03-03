@@ -1,11 +1,12 @@
 import sys
 import json
-from .utils import read_source_code_from_file, get_obj_type, \
+from .utils import get_obj_type, \
     Encoder, try_copy, set_trace, FileManger
 
 
 class CallSeq(object):
-    def __init__(self, pattern_list=None, name="sequence.json", max_depth=None):
+    def __init__(self, pattern_list=None, name="sequence.json",
+                 max_depth=None):
         self.name = name
         self.top_call_sequence = {'seq': [], 'name': '<top>'}
         self.cuurent_call_sequence = self.top_call_sequence
@@ -47,12 +48,13 @@ class CallSeq(object):
                                                 frame.f_back.f_lineno)
             callee_code = frame.f_code
             callee_file_name = callee_code.co_filename
-            callee_first_line = callee_code.co_firstlineno
-            new_call_sequence = {'caller_code': caller, 'seq': [],
-                                 'lineno': frame.f_back.f_lineno,
-                                 'caller_file_name': caller_file_name,
-                                 'callee_first_line': callee_code.co_firstlineno,
-                                 'callee_file_name': callee_file_name}
+            new_call_sequence = {
+                'caller_code': caller, 'seq': [],
+                'lineno': frame.f_back.f_lineno,
+                'caller_file_name': caller_file_name,
+                'callee_first_line': callee_code.co_firstlineno,
+                'callee_file_name': callee_file_name,
+            }
 
             self.stack[-1]['seq'].append(new_call_sequence)
             self.stack.append(new_call_sequence)
@@ -92,15 +94,15 @@ class CallSeq(object):
                 'code': self.file_manager.to_dict()
             }
             ftr.write(json.dumps(data, sort_keys=True, skipkeys=True,
-                      indent=4, separators=(',', ': '), cls=Encoder))
+                                 indent=4, separators=(',', ': '),
+                                 cls=Encoder))
 
     def __enter__(self):
         self.set_trace()
 
-    def __exit__(self ,type, value, traceback):
+    def __exit__(self, type, value, traceback):
         self.unset_trace()
         self.dump_to_file(self.name)
-
 
 
 if __name__ == '__main__':
